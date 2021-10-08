@@ -18,14 +18,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtSong"
+            android:id="@+id/songName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
-            android:text="Song Name"
+            android:text="Song"
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textAlignment="center"
@@ -44,7 +44,7 @@
             
             <SeekBar
                 android:id="@+id/seekBar"
-                android:layout_width="250dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_alignParentBottom="true"
@@ -85,7 +85,63 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/playButton"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_pause"/>
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/playButton"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/ic_next"/>
+            <Button
+                android:id="@+id/previousButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toLeftOf="@id/playButton"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/ic_previous"/>
+
+            <Button
+                android:id="@+id/fastForwardButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toRightOf="@id/nextButton"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/ic_fast_forward"/>
+
+            <Button
+                android:id="@+id/fastRewindButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toLeftOf="@id/previousButton"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/ic_fast_rewind"/>
+
+            <com.gauravk.audiovisualizer.visualizer.BarVisualizer
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/blast"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                custom:avDensity="0.8"
+                custom:avType="outline"
+                custom:avColor="#FF362E"
+                custom:avSpeed="normal"
+                custom:avWidth="4dp"
+                android:layout_alignParentBottom="true"
+                />
+
+
+        </RelativeLayout>
     </LinearLayout>
+
+
 
 </LinearLayout>

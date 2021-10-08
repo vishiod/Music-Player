@@ -2,10 +2,12 @@ package com.example.musicplayer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -93,6 +95,18 @@ public class MainActivity extends AppCompatActivity {
 
         CustomAdapter customAdapter = new CustomAdapter();
         listView.setAdapter(customAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String songName = (String) listView.getItemAtPosition(i);
+
+                startActivity(new Intent(getApplicationContext(), PlayerActivity.class)
+                        .putExtra("songs", mySongs)
+                        .putExtra("songName", songName)
+                        .putExtra("pos", i));
+            }
+        });
     }
 
     public ArrayList<File> findSong(File file) {
