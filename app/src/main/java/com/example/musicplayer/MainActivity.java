@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,14 +14,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ListView listView;
@@ -67,22 +66,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void runTimePermission() {
-        Dexter.withContext(this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
-            @Override
-            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                displaySongs();
-            }
+        Dexter.withContext(this).withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
+                                .withListener(new MultiplePermissionsListener(){
+                                    @Override
+                                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                                        displaySongs();
+                                    }
 
-            @Override
-            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-
-            }
-
-            @Override
-            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                permissionToken.continuePermissionRequest();
-            }
-        }).check();
+                                    @Override
+                                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                                        permissionToken.continuePermissionRequest();
+                                    }
+                                }).check();
     }
 
     public void displaySongs() {
@@ -96,17 +91,10 @@ public class MainActivity extends AppCompatActivity {
         CustomAdapter customAdapter = new CustomAdapter();
         listView.setAdapter(customAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String songName = (String) listView.getItemAtPosition(i);
-
-                startActivity(new Intent(getApplicationContext(), PlayerActivity.class)
-                        .putExtra("songs", mySongs)
-                        .putExtra("songName", songName)
-                        .putExtra("pos", i));
-            }
-        });
+        listView.setOnItemClickListener((adapterView, view, i, l) -> startActivity(new Intent(getApplicationContext(), PlayerActivity.class)
+                .putExtra("songs", mySongs)
+//                        .putExtra("songName", (String) listView.getItemAtPosition(i))
+                .putExtra("pos", i)));
     }
 
     public ArrayList<File> findSong(File file) {
